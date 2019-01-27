@@ -30,16 +30,10 @@ int main(void) {
     fflush(stdout);
     sleep(500);
 
-    if (cnt < name_len - 1)
-      cnt++;
+    if (cnt > 0)
+      cnt--;
     else
-      cnt = 0;
+      cnt = name_len - 1;
   }
   return 0;
 }
-/* 
-左方向のテロップでは、cnt（先頭文字）は
-0 1 2 3 4 5 6 0 と循環する
-右方向にするには、
-0 6 5 4 3 2 1 0 と循環させる
-*/
