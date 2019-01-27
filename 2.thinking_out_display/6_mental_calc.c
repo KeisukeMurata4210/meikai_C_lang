@@ -27,8 +27,8 @@ int main(void) {
   }
   end = clock();//計測終了
 
-  req_time = (double)((end - start) / CLOCKS_PER_SEC);
-  printf("%.1f秒かかりました。\n", req_time); // なぜか0.0秒で表示されてしまう
+  req_time = (double)(end - start) / CLOCKS_PER_SEC;
+  printf("%.1lf秒かかりました。\n", req_time); // なぜか0.0秒で表示されてしまう
   if (req_time > 30.0) {
     printf("時間がかかりすぎです。\n");
   } else if (req_time > 17.0) {
