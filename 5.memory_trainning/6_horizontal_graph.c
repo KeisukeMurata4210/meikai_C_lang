@@ -49,7 +49,7 @@ int main(void) {
       printf("%d ", no[i]);
     }
     fflush(stdout);
-    sleep(level * 300); //0.30*level秒
+    sleep(level * 100); //0.10*level秒
     printf("\r%*s\r", 3 * level, "");
     fflush(stdout);
 
@@ -79,9 +79,17 @@ int main(void) {
   end = clock();
 
   printf("%d個中%d個成功しました。\n", level * MAX_STAGE, success); // 10回全体の正解数を表示
-  for (stage = 0; stage < MAX_STAGE; stage++) {                  // 回（ステージ）ごとの正解数を表示
-    printf("第%2dステージ：%d\n", stage + 1, score[stage]);
+
+  printf("\n■□ 成績 □■\n");
+  printf("-------------------------\n");
+  for (stage = 0; stage < MAX_STAGE; stage++) {            // 回ごとに取得した点数分★を表示する      
+    printf("第%2dステージ：", stage + 1);
+    for (i = 0; i < score[stage]; i++) {
+      printf("★");
+    }
+    putchar('\n');     // ループの外で改行しないと、星一つにつき改行されてしまう
   }
+  printf("-------------------------\n");
 
   printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
   return 0;

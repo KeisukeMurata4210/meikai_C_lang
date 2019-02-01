@@ -49,7 +49,7 @@ int main(void) {
       printf("%d ", no[i]);
     }
     fflush(stdout);
-    sleep(level * 300); //0.30*level秒
+    sleep(level * 100); //0.10*level秒
     printf("\r%*s\r", 3 * level, "");
     fflush(stdout);
 
@@ -79,10 +79,22 @@ int main(void) {
   end = clock();
 
   printf("%d個中%d個成功しました。\n", level * MAX_STAGE, success); // 10回全体の正解数を表示
-  for (stage = 0; stage < MAX_STAGE; stage++) {                  // 回（ステージ）ごとの正解数を表示
-    printf("第%2dステージ：%d\n", stage + 1, score[stage]);
-  }
 
+  printf("\n■□ 成績 □■\n");
+  for (i = level; i >= 1; i--) { // グラフの上から下へ　6文字目 5文字目 …
+    for (stage = 0; stage < MAX_STAGE; stage++) { // それぞれに対して、1回目 2回目 …
+      if (score[stage] >= i)   // 例えば２回目のスコアが3で、今のループが2文字目だった場合、score[stage]は3、iは2
+        printf(" ★ ");
+      else
+        printf("   ");
+    }
+    putchar('\n');
+  }
+  printf("------------------------------------\n");
+  for (stage = 1; stage <= MAX_STAGE; stage++) {
+    printf(" %02d ", stage);    // 同じ列に回数を表示
+  }
+  putchar('\n');
   printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
   return 0;
 }
