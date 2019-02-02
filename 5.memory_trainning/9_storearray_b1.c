@@ -9,7 +9,6 @@ int main(void) {
   int retry;   // もう一度？
 
   printf("整数を入力してください。\n");
-  printf("入力できるのは最大で%d個です。\n", MAX);
 
   do { 
     if (cnt >= MAX) { // 10個以上の要素を入力されたら
@@ -29,7 +28,7 @@ int main(void) {
     for (i = 0; i < cnt; i++)
       printf("%2d個目　： %d\n", i + 1, a[i]);
   } else {
-    for (i = 0; i < cnt; i++)
+    for (i = 0; i < MAX; i++)  // オーバーしている場合は10回までしかループさせない
       printf("%2d個目　： %d\n", cnt - MAX + i + 1, a[i]); // 10より多ければ、多い分だけ「○個目」の表示を変える
   }
   return 0;
