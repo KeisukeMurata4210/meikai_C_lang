@@ -31,12 +31,29 @@ void put_calendar(int y, int m) {
   int mdays = monthdays(y, m); // 指定された月の日数
 
   printf(" 日 月 火 水 木 金 土 \n");
-  printf("--------------------\n");
+  printf("---------------------\n");
 
   printf("%*s", 3 * wd, ""); // 1日より左側のスペースを表示
 
   for (i = 1; i <= mdays; i++) {
     printf("%3d", i);
-    if (++wd % 7 == 0)
+    if (++wd % 7 == 0) // なぜこれで土曜日を表せるの？？ wd（曜日）は0~6。日曜日から数えるので土曜日は6で、インクリメントして7
+      putchar('\n');
   }
+  if (wd % 7 != 0)    // 出力後の改行。土曜日が最後なら改行済みのためif文
+    putchar('\n');
+}
+
+int main(void) {
+  int y, m;
+
+  printf("カレンダーを表示します。\n");
+  printf("年："); scanf("%d", &y);
+  printf("月："); scanf("%d", &m);
+
+  putchar('\n');
+
+  put_calendar(y, m);
+
+  return 0;
 }
