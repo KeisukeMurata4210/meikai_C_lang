@@ -41,9 +41,9 @@ int make_calendar(int y, int m, char s[7][22]) {
   sprintf(s[k], "%*s", 3 * wd, "");// 第１日の左側を空欄で埋める
 
   for (i = 1; i <= mdays; i++){
-    sprintf(tmp, "%3d", i);
-    strcat(s[k], tmp);
-    if (++wd % 7 == 0)
+    sprintf(tmp, "%3d", i); // tmp=1日分の文字列 "  1"など
+    strcat(s[k], tmp);      // 順番に引っ付けていく
+    if (++wd % 7 == 0)      // 土曜日になったら次の行に
       k++;
   }
 
