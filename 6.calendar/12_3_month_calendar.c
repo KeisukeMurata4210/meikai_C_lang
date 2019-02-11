@@ -24,9 +24,6 @@ int monthdays(int year, int month) {
 }
 
 /* y年m月のカレンダーを２次元配列sに格納 */
-/* 
-
- */
 int make_calendar(int y, int m, char s[7][22]) {
   int i, k;
   int wd = dayofweek(y, m, 1);/* y年m月1日の曜日 */
@@ -50,11 +47,11 @@ int make_calendar(int y, int m, char s[7][22]) {
   if (wd % 7 == 0)
     k--;
   else {
-    for (wd %= 7; wd < 7; wd++)
+    for (wd %= 7; wd < 7; wd++) //土曜日でなければ行が全て埋まっていない→次の月の始まりがズレる ので空欄で埋める
       strcat(s[k], "   ");
   }
   while (++k < 7)
-    sprintf(s[k], "%21s", "");
+    sprintf(s[k], "%21s", ""); // 21個の空欄で、空欄のみの行を追加する。
 }
 
 /* ３次元配列sbufに格納されたカレンダーを横にn個並べて表示 */
@@ -62,7 +59,7 @@ void print(char sbuf[3][7][22], int n) {
   int i, j;
 
   for (i = 0; i < n; i++)
-    print("%s  ", sbuf[i][0]); // タイトルを表示
+    printf("%s   ", sbuf[i][0]); // タイトルを表示
   putchar('\n');
   for (i = 0; i < n; i++)
     printf(" 日 月 火 水 木 金 土   ");
@@ -89,7 +86,7 @@ void put_calendar(int y1, int m1, int y2, int m2) {
     if (y == y2 && m > m2) break;
     make_calendar(y, m, sbuf[n++]);
     if (n == 3) {
-      print(sbuf, n);
+      print(sbuf, n);// ここで、3ヶ月ずつ区切って出力するよう制御する！！
       n = 0;
     }
     m++;
