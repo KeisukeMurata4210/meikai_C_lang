@@ -51,15 +51,15 @@ void put_calendar(int y, int m) {
 
 /* 文字列の先頭n文字を比較（大文字・小文字を区別しない） */
 int strncmpx(const char *s1, const char *s2, size_t n) {
-  while (n && toupper(*s1) && toupper(*s2)) {
+  while (n && toupper(*s1) && toupper(*s2)) { // サイズを超えるか、引数の配列の要素数を突き抜けるかするまでループ
     if (toupper(*s1) != toupper(*s2))
-      return (unsigned char)*s1 - (unsigned char)*s2;
+      return (unsigned char)*s1 - (unsigned char)*s2; // 文字コード上の計算
     s1++;
     s2++;
     n--;
   }
-  if (!n)  return 0;
-  if (*s1) return 1;
+  if (!n)  return 0;//s1 == s2（文字が同じでサイズも同じ）
+  if (*s1) return 1;//s1 > s2（s1にはまだアクセスできるアドレスがある）
   return -1;
 }
 
@@ -72,13 +72,13 @@ int get_month(char *s) {
                     "October", "November", "December"};
   m = atoi(s);
   if (m >= 1 && m <= 12)
-    return m;
+    return m; // 1~12までを入力されていれば問題なく、そのまま返す
   
   for (i = 1; i <= 12; i++) {
-    if (strncmpx(month[i], s, 3) == 0)
+    if (strncmpx(month[i], s, 3) == 0)//先頭3文字で、month[]と入力された月が一致しているか調べる → 一致していればその月に対応する数字を返す
       return i;
   }
-  return -1;
+  return -1; // ダメなら-1
 }
 
 int main(int argc, char *argv[]) {
