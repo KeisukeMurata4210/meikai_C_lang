@@ -1,7 +1,7 @@
 # include <time.h>
+# include <ctype.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 
 /* 各月の日数 */
 int mday[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -17,7 +17,7 @@ int dayofweek(int year, int month, int day) {
 
 /* year年は閏年か？(0-No, 1-Yes) */
 int is_leap(int year) {
-  return year % 4 == 0 && year % 100 != 0 && year % 400 == 0;
+  return (year % 4 == 0 && year % 100 != 0 || year % 400 == 0);
 }
 
 /* year年month月の日数（28~31） */
@@ -59,11 +59,53 @@ int strncmpx(const char *s1, const char *s2, size_t n) {
     n--;
   }
   if (!n)  return 0;
-  if (*s1) return 0;
+  if (*s1) return 1;
   return -1;
 }
 
 /* 文字列から月の値を得る */
 int get_month(char *s) {
-  int 
+  int i;
+  int m;
+  char *month[] = {"", "January", "February", "March", "April", 
+                    "May", "June", "July", "August", "September",
+                    "October", "November", "December"};
+  m = atoi(s);
+  if (m >= 1 && m <= 12)
+    return m;
+  
+  for (i = 1; i <= 12; i++) {
+    if (strncmpx(month[i], s, 3) == 0)
+      return i;
+  }
+  return -1;
+}
+
+int main(int argc, char *argv[]) {
+  int y, m;
+  time_t t = time(NULL);
+  struct tm *local = localtime(&t);
+
+  y = local->tm_year + 1900;
+  m = local->tm_mon + 1;
+
+  if (argc >= 2) {
+    m = get_month(argv[1]);
+    if (m < 0 || m > 12) {
+      fprintf(stderr, "月の値が不正です。\n");
+      return 1;
+    }
+  }
+  if (argc >= 3) {
+    y = atoi(argv[2]);
+    if (y < 0) {
+      fprintf(stderr, "年の値が不正です。\n");
+      return 1;
+    }
+  }
+
+  printf("%d年%d月\n\n", y, m);
+  put_calendar(y, m);
+
+  return 0;
 }

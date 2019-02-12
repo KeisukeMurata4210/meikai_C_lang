@@ -14,7 +14,7 @@ int dayofweek(int year, int month, int day) {
 }
 
 int is_leap(int year) {
-  return year % 4 == 0 && year % 100 != 0 && year % 400 == 0;
+  return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 }
 
 int monthdays(int year, int month) {

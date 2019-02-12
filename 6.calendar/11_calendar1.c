@@ -14,7 +14,7 @@ int dayofweek(int year, int month, int day) {
 
 /* year年は閏年か？(0-No, 1-Yes) */
 int is_leap(int year) {
-  return year % 4 == 0 && year % 100 != 0 && year % 400 == 0;
+  return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 }
 
 /* year年month月の日数（28~31） */
