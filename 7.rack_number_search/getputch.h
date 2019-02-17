@@ -33,7 +33,7 @@
       va_list ap;
       int     count;
       va_start(ap, format);
-      vsprintf(__buf, format, ap);
+      vsprintf(__buf, format, ap);// 配列に可変長引数を格納し、その配列のポインタを__bufに格納
       va_end(ap);
 
       for(count = 0; __buf[count], count++) {
