@@ -73,3 +73,6 @@ int main(void)
   term_getputch();
   return 0;
 }
+/* 
+cursesヘッダーを使うから、gcc   -lcurses　でコンパイル
+ */
