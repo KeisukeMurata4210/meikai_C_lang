@@ -1,5 +1,5 @@
 /* getch / putch用の共通ヘッダ”getputch.h” */
-# ifndef __GETPUTCH // インクルードガード。２重でインクルードされた時はスキップする。コンパイルエラーにならないように。
+# if !defined(__GETPUTCH) // インクルードガード。２重でインクルードされた時はスキップする。コンパイルエラーにならないように。
   # define __GETPUTCH
   # if defined(_MSC_VER) ||(__TURBOC__)||(LSI_C)
   /* MS-Windows / MS-DOS */
@@ -13,11 +13,12 @@
     # undef putchar
     # undef puts
     # undef printf
+    static char __buf[4096];
     /* putchar関数と同等（改行すると「改行＋復帰」を出力） */
     static int __putchar(int ch) 
     {
       if (ch == '\n')
-        putchar('\r')
+        putchar('\r');
       return putchar(ch);
     }
     /* putch １文字表示してバッファを掃き出す */
@@ -36,7 +37,7 @@
       vsprintf(__buf, format, ap);// 配列に可変長引数を格納し、その配列のポインタを__bufに格納
       va_end(ap);
 
-      for(count = 0; __buf[count], count++) {
+      for(count = 0; __buf[count]; count++) {
         putchar(__buf[count]);
         if (__buf[count] == '\n')
           putchar('\r');
@@ -44,11 +45,11 @@
       return count;
     }
     /* puts関数と同等（改行すると「改行＋復帰」を出力） */
-    static int __puts(const char *s)
+    int __puts(const char *s)
     {
       int i, j;
-      for(i = j = 0; s[i]; i++) {
-        __buf[j++] = s[i]
+      for(i = 0, j = 0; s[i]; i++) {
+        __buf[j++] = s[i];
         if (s[i] == '\n')
           __buf[j++] = '\r';
       }
@@ -65,7 +66,7 @@
     /* ライブラリ終了処理 */
     static void term_getputch(void)
     {
-      endwin()
+      endwin();
     }
     # define putchar __putchar
     # define printf  __printf
