@@ -26,7 +26,7 @@ int main(void)
   printf(" 連続する三つの数字あるいは英字から\n");
   printf(" 隠されている文字を入力してください。\n");
   printf(" たとえば A ? C： と表示されたらBを\n");
-  printf("      ば 4 5 ?： と表示されたら6を\n");
+  printf("         4 5 ?： と表示されたら6を\n");
   printf(" 入力します。\n");
   printf("★スペースキーで開始します。\n");
   while (getch() != ' ')
@@ -38,6 +38,38 @@ int main(void)
     int nhead = rand() % (chmax[qtype] -2); // 先頭文字の添字
     int x     = rand() % 3; // 3文字のどれを?にするか
     putchar('\r');
+    for (i = 0; i< 3; i++) {
+      if (i != x)
+        printf(" %c", qstr[qtype][nhead + i]);
+      else
+        printf(" ?");
+    }
+    printf(" ： ");
+    fflush(stdout);
 
+    do {
+      key = getch();
+      if (isprint(key)) {
+        putch(key);
+        if (key != qstr[qtype][nhead + x])
+          putch('\b');
+      }
+    } while(key != qstr[qtype][nhead + x]);
   }
+  end = clock();
+
+  jikan = (double)(end - start) / CLOCKS_PER_SEC;
+  printf("%.lf秒かかりました。\n", jikan);
+  
+  if (jikan > 25.0)
+    printf("阿保が。\n");
+  else if (jikan > 20.0)
+    printf("少し鈍いですね。\n");
+  else if (jikan > 17.0)
+    printf("まあまあですね。\n");
+  else
+    printf("素早いですね。\n");
+
+  term_getputch();
+  return 0;
 }
