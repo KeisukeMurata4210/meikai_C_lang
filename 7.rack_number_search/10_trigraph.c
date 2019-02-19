@@ -14,7 +14,7 @@ int main(void)
                   "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                   "abcdefghijklmnopqrstuvwxyz"
                   };
-  int chmax[] = {10, 26, 26};
+  int chmax[] = {10, 26, 26};//文字数を覚えておく
   int i, stage;
   int key;         // 読み込んだキー
   double jikan;
@@ -29,13 +29,14 @@ int main(void)
   printf("         4 5 ?： と表示されたら6を\n");
   printf(" 入力します。\n");
   printf("★スペースキーで開始します。\n");
+  fflush(stdout);//この仕組みはまた今度
   while (getch() != ' ')
     ;
 
   start = clock();
   for (stage = 0; stage < MAX_STAGE; stage++) {
     int qtype = rand() % 3; /* 0:数字 / 1:英大文字 / 2:英小文字 */
-    int nhead = rand() % (chmax[qtype] -2); // 先頭文字の添字
+    int nhead = rand() % (chmax[qtype] -2); // 先頭文字の添字　chmaxで文字数を取得し、３文字表示だから最大値は-2した値。その値一つ手前までのランダムにすれば先頭文字の添字を取れる
     int x     = rand() % 3; // 3文字のどれを?にするか
     putchar('\r');
     for (i = 0; i< 3; i++) {
@@ -52,7 +53,7 @@ int main(void)
       if (isprint(key)) {
         putch(key);
         if (key != qstr[qtype][nhead + x])
-          putch('\b');
+          putch('\b');//カーソルを一つもどす
       }
     } while(key != qstr[qtype][nhead + x]);
   }
