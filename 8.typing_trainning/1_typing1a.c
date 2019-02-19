@@ -31,7 +31,8 @@ int main(void)
   }
   end = clock();
 
-  printf("\n%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
   term_getputch();
+  printf("\n%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
+  
   return 0;
 }
