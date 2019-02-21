@@ -14,19 +14,15 @@ int main(void)
                     "monday", "power", "light", "music",
                     "programming", "dog", "video", "include"};
   int i, stage;
-  int qno[QND]; // 出題順序
   clock_t start, end;
 
   init_getputch();
   srand(time(NULL));
 
-  for (i = 0; i < QND; i++) // 出題順序＝strの添字を準備する。
-    qno[i] = i;
-
   for (i = QND -1; i > 0; i--) {
     int j = rand() % (i + 1); // 0~i
     if (i != j)
-      swap(int, qno[i], qno[j]);  // strの添字を並び替える => 出題順序が並び変わる
+      swap(char *, str[i], str[j]);  // str自体を並び替える
   }
 
   printf("タイピング練習を始めます。\n");
@@ -35,12 +31,11 @@ int main(void)
     ;
   start = clock();
   for (stage = 0; stage < QND; stage++) {
-    int len = strlen(str[qno[stage]]); // 添字にqno[stage]を指定すると、並び替えられた順番でstrの文字列を取り出せる
+    int len = strlen(str[stage]); // こっちも文字列から直接長さを取得する
     for (i = 0; i < len; i++) {
-      printf("%s \r", &str[qno[stage]][i]); // iのループのたび、book ook ok と表示されていく
-
+      printf("%s \r", &str[stage][i]);
       fflush(stdout);
-      while(getch() != str[qno[stage]][i])
+      while(getch() != str[stage][i])
         ;
     }
   }
