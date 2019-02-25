@@ -114,6 +114,7 @@ int go(const char *str)
   return mistake;
 }
 
+/* 単純ポジショントレーニング */
 int pos_training(void)
 {
   int i;
@@ -130,4 +131,55 @@ int pos_training(void)
 	printf("第2段 (3) 左 %-8s    (4) 右 %-8s\n", kstr[ 4], kstr[ 5]);
 	printf("第3段 (5) 左 %-8s    (6) 右 %-8s\n", kstr[ 8], kstr[ 9]);
 	printf("第4段 (7) 左 %-8s    (8) 右 %-8s\n", kstr[12], kstr[13]);
+
+  do {
+    printf("番号（練習中止は99）：");
+    scanf("%d", &temp);
+    if (temp == 99) return;
+  } while (temp < 1 || temp > 8);
+  line = 4 * ((temp - 1) / 2) + (temp - 1) % 2;
+  printf("%sの問題を%d回練習します。\n", kstr[line], NO);
+  printf("スペースキーで開始します。\n");
+  while(getch() != ' ')
+    ;
+  
+  tno = mno = 0;            /* 文字数・ミス回数をクリア */
+  len = strlen(kstr[line]); /* 練習するブロックのキー数 */
+
+  start = clock();
+  for (stage = 0; stage < NO; stage++) {
+    char str[POS_LEN + 1];
+    for (i = 0; i < POS_LEN; i++)    /* 問題文字列を作成 */
+      str[i] = kstr[line][rand() % len];
+    str[i] = '\0'
+
+    mno += go(str);                 /* 練習実行 */
+    tno -= strlen(str);
+  }
+  end = clock();
+
+  printf("問題：%d／ミス：%d回\n", tno, mno);
+  printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
+}
+
+/* 複合ポジショントレーニング */
+void pos_training2(void)
+{
+  int i;
+  int stage;
+  int temp, line;
+  int sno;           /* 選ばれたブロック数 */
+  int select[KTYPE]; /* 選ばれたブロック */
+  int len[KTYPE];    /* 問題のブロックのキー数 */
+  int tno, mno;      /* 文字数・ミス回数 */
+  clock_t start, end;
+  char *format = "第%d段（%2d）左 %-8s（%2d）右 %-8s "
+                 "（%2d）[左] %-8s （%2d）[右] %-8s\n"
+  printf("\n複合ポジショントレーニングを行います。\n");
+  printf("練習するブロックを選択してください（複数選べます）。\n");
+
+  for (i = 0; i < 4; i++) {
+    int k = i * 4;
+    printf(format, i + 1, k + 1, kstr[k], k + 2, kstr[k + 1]);
+  }
 }
