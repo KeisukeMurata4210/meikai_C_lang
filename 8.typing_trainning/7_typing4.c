@@ -180,6 +180,153 @@ void pos_training2(void)
 
   for (i = 0; i < 4; i++) {
     int k = i * 4;
-    printf(format, i + 1, k + 1, kstr[k], k + 2, kstr[k + 1]);
+    printf(format, i + 1, k + 1, kstr[k],     k + 2, kstr[k + 1],
+                          k + 3, kstr[k + 2], k + 4, kstr[k + 3]);
   }
+
+  /* ブロックを重複させずに選択させる（最大16個） */
+  sno = 0;
+  while(i) {
+    printf("番号（選択終了は50 / 練習中止は99）：");
+    do {
+      scanf("%d ", &temp);
+      if (temp == 99) return; /* 練習中止 */
+    } while ((temp < 1 || temp > KTYPE) && temp != 50);
+
+    if (temp == 50)
+      break;
+    for (i = 0; i < sno; i++) {
+      if (temp == select[i]) {
+        printf("\aその段は既に選ばれています。\n");
+        break;
+      }
+    }
+    if (i == sno)
+      select[sno++] = temp;
+  }
+  if (sno == 0)
+    return;
+  printf("以下のブロックの問題を%d回練習します。\n", NO);
+  for (i = 0; i < sno; i++)
+    printf("%s ", kstr[select[i] - 1]);
+  printf("\nスペースキーで開始します。\n");
+  while (getch() != ' ')
+    ;
+  tno = mno = 0;
+  for (i = 0; i < sno; i++)
+    len[i] = strlen(kstr[select[i] - 1]);
+  
+  start = clock();
+  for (stage = 0; stage < NO; stage++) {
+    char str[POS_LEN + 1];
+    
+    for (i = 0; i < POS_LEN; i++) {
+      int q = rand() % sno;
+      str[i] = kstr[select[q] - 1][rand() % len[q]];
+    }
+    str[i] = '\0';
+
+    mno += go(str);
+    tno += strlen(str);
+  }
+  end = clock();
+
+  printf("問題：%d文字 / ミス：%d回\n", tno, mno);
+  printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
 }
+
+/* C言語 / 英会話トレーニング  */
+void word_training(const char *mes, const char *str[], int n)
+{
+  int stage;
+  int qno, pno;       /* 問題番号・前回の問題番号 */
+  int tno, mno;       /* 文字数・ミス回数 */
+  clock_t start, end;
+
+  printf("\n%sを%d個練習します。\n", mes, NO);
+  printf("スペースキーで開始します。\n");
+  while(getch() != ' ')
+    ;
+  tno = mno = 0;/* 問題数・ミス回数をクリア */
+  pno = n;      /* 前回の問題番号（存在しない番号） */
+
+  start = clock();
+  for (stage = 0; stage < NO; stage++) {
+    do {
+      qno = rand() % n;
+    } while(qno == pno);
+    mno += go(str[qno]);
+    tno += strlen(str[qno]);
+    pno = qno;
+  }
+  end = clock();
+
+  printf("問題：%d文字 / ミス：%d回\n", tno, mno);
+  printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
+}
+
+/* メニュー選択 */
+Menu SelectMenu(void)
+{
+  int ch;
+  do {
+    printf("\n練習を選択してください。\n");
+    printf("（1）単純ポジション （2）複合ポジション\n");
+    printf("（3）C言語の単語　　（4）英会話　　（0）終了：");
+    scanf("%d", &ch);
+  } while(ch < Term || ch >= InValid);
+
+  return (Menu)ch;
+}
+
+int main(void)
+{
+  Menu menu;
+  int cn = sizeof(cstr) / sizeof(cstr[0]);
+  int vn = sizeof(vstr) / sizeof(vstr[0]);
+
+  init_getputch();
+  srand(time(NULL));
+  do {
+    switch (menu = SelectMenu())
+    {
+      case KeyPos:
+        pos_training();
+        break;
+
+      case KeyPosComp:
+        pos_training2();
+        break;
+
+      case Clang:
+        word_training("C言語の単語", cstr, cn);
+        break;
+
+      case Conversation:
+        word_training("英会話の文書", vstr, vn);
+        break;
+    }
+  } while(menu != Term);
+  term_getputch();
+  return 0;
+}
+/* 
+typedef：type（型）definition（定義）
+既に定義されている型に別の名前を付けられる。
+typedef 定義されている型 定義する新しい型
+
+・新しい名前でその型として使える。
+・定義されている型も以前と同じように使える。
+・名前の末尾に「_t」をつける慣習がある。
+
+構造体：
+struct タグ名 {};
+struct タグ名 変数名;
+
+typedefを使うと、型名を直接かける
+typedef struct {} 型名;
+型名 変数名;
+
+列挙型：
+構造体とは別物。
+ */
