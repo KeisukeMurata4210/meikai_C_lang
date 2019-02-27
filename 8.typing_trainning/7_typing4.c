@@ -115,7 +115,7 @@ int go(const char *str)
 }
 
 /* 単純ポジショントレーニング */
-int pos_training(void)
+void pos_training(void)
 {
   int i;
   int stage;
@@ -151,10 +151,10 @@ int pos_training(void)
     char str[POS_LEN + 1];
     for (i = 0; i < POS_LEN; i++)    /* 問題文字列を作成 */
       str[i] = kstr[line][rand() % len];
-    str[i] = '\0'
+    str[i] = '\0';
 
     mno += go(str);                 /* 練習実行 */
-    tno -= strlen(str);
+    tno += strlen(str);
   }
   end = clock();
 
@@ -174,7 +174,7 @@ void pos_training2(void)
   int tno, mno;      /* 文字数・ミス回数 */
   clock_t start, end;
   char *format = "第%d段（%2d）左 %-8s（%2d）右 %-8s "
-                 "（%2d）[左] %-8s （%2d）[右] %-8s\n"
+                 "（%2d）[左] %-8s （%2d）[右] %-8s\n";
   printf("\n複合ポジショントレーニングを行います。\n");
   printf("練習するブロックを選択してください（複数選べます）。\n");
 
@@ -186,7 +186,7 @@ void pos_training2(void)
 
   /* ブロックを重複させずに選択させる（最大16個） */
   sno = 0;
-  while(i) {
+  while(1) {
     printf("番号（選択終了は50 / 練習中止は99）：");
     do {
       scanf("%d ", &temp);
@@ -276,7 +276,7 @@ Menu SelectMenu(void)
     scanf("%d", &ch);
   } while(ch < Term || ch >= InValid);
 
-  return (Menu)ch;
+  return (Menu)ch;// ①int型を列挙型でキャストすると何になる？
 }
 
 int main(void)
@@ -290,7 +290,7 @@ int main(void)
   do {
     switch (menu = SelectMenu())
     {
-      case KeyPos:
+      case KeyPos:// ①列挙型の要素を単独で使えるのはなぜ？
         pos_training();
         break;
 
@@ -327,6 +327,8 @@ typedefを使うと、型名を直接かける
 typedef struct {} 型名;
 型名 変数名;
 
-列挙型：
+列挙体：
 構造体とは別物。
+複数の定数を並べてそれに名前を付けたもの。
+defineを使って一つずつ定義するより簡単
  */
