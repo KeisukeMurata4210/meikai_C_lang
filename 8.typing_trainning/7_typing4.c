@@ -121,7 +121,7 @@ void pos_training(void)
     scanf("%d", &temp);
     if (temp == 99) return;
   } while(temp < 1 || temp > 8);
-  line = 4 * ((temp - 1) / 2) + (temp - 1) % 2;//ここの仕組みを理解したい！！！
+  line = 4 * ((temp - 1) / 2) + (temp - 1) % 2;//ここの仕組みを理解したい！！！どういう考え方でこの式に行き着いたのか
 }
 
 /* メニュー選択 */
