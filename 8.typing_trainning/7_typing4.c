@@ -162,6 +162,30 @@ void pos_training(void)
   printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
 }
 
+/* 複合ポジショントレーニング */
+void pos_training2(void)
+{
+	int i;
+	int stage;
+	int temp, line;
+	int sno;          /* 選ばれたブロック数 */
+	int select[KTYPE];/* 選ばれたブロック　　　　ブロック数分の要素数を確保 */
+	int len[KTYPE];   /* 問題のブロックのキー数　ブロック数分の要素数を確保 */
+	int tno, mno;     /* 文字数・ミス回数 */
+	clock_t start, end;
+	char *format = "第%d段（%2d）左 %-8s（%2d）右 %-8s "
+											"（%2d）[左] %-8s（%2d）[右] %-8s\n"
+	
+	printf("\n複合ポジショントレーニングを行います。\n");
+	printf("練習するブロックを選択してください（複数選べます）。\n");
+
+	for (i = 0; i < 4; i++) {/* 1段から4段まで */
+		int k = i * 4;
+		printf(format, i+1, );
+	}
+
+}
+
 /* メニュー選択 */
 Menu SelectMenu(void)
 {
