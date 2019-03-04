@@ -98,6 +98,24 @@ char *vstr[] = {
 	"To be honest with you,",			/* �����Ɍ����Ɓc */
 };
 
+/* 文字列strをタイプして、ミス回数を返す */
+int go(const char *str)
+{
+  int i;
+  int len = strlen(str);/* 文字数 */
+  int mistake = 0;      /* ミス回数 */
+
+  for (i = 0; i < len; i++) {
+    printf("%s \r", %str[i]);/* str[i]以降を表示してカーソルを先頭に戻す */
+    fflush(stdout);
+    while(getch() != str[i]){
+      mistake++;
+    }
+  }
+  return mistake;
+}
+
+/* 単純ポジショントレーニング */
 void pos_training(void)
 {
   int i;
@@ -137,7 +155,11 @@ void pos_training(void)
       str[i] = kstr[line][rand() % len];
     str[i] = '\0';
     mno += go(str);/* 練習実行 */
+    tno += strlen(str);  /* 文字数10文字 * トレーニング15回の総文字数がtno */
   }
+  end = clock();
+  printf("問題：%d文字 / ミス：%d回\n", tno, mno);
+  printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
 }
 
 /* メニュー選択 */
@@ -165,6 +187,9 @@ int main(void)
     switch (menu = SelectMenu()){
       case KeyPos:
         pos_training();
+        break;
+      case KeyPosComp:
+        pos_training2();
         break;
     }
   }while(menu != Term);
