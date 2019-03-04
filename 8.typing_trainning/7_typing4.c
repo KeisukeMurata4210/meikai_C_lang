@@ -121,7 +121,23 @@ void pos_training(void)
     scanf("%d", &temp);
     if (temp == 99) return;
   } while(temp < 1 || temp > 8);
-  line = 4 * ((temp - 1) / 2) + (temp - 1) % 2;//ここの仕組みを理解したい！！！どういう考え方でこの式に行き着いたのか
+  line = 4 * ((temp - 1) / 2) + (temp - 1) % 2;/* 右辺は偶数の時1、奇数の時0 →左辺は1357を048(12)に変換する式にすればいい */
+
+  printf("%sの問題を%d回練習します。\n", kstr[line], NO);
+  printf("スペースキーで開始します。\n");
+  while (getch() != ' ')
+    ;
+  tno = mno = 0;            /* 文字数・ミス回数をクリア */
+  len = strlen(kstr[line]); /* 練習するブロックのキー数 */
+
+  start = clock();
+  for (stage = 0; stage < NO; stage++) {
+    char str[POS_LEN + 1];
+    for (i = 0; i < POS_LEN; i++)     /* 問題文字列を作成 指定した段からランダムに10文字表示される */
+      str[i] = kstr[line][rand() % len];
+    str[i] = '\0';
+    mno += go(str);/* 練習実行 */
+  }
 }
 
 /* メニュー選択 */
