@@ -174,16 +174,25 @@ void pos_training2(void)
 	int tno, mno;     /* 文字数・ミス回数 */
 	clock_t start, end;
 	char *format = "第%d段（%2d）左 %-8s（%2d）右 %-8s "
-											"（%2d）[左] %-8s（%2d）[右] %-8s\n"
+											"（%2d）[左] %-8s（%2d）[右] %-8s\n"/* 選んだ2つのブロックから、ランダムに10文字タイプさせる */
 	
 	printf("\n複合ポジショントレーニングを行います。\n");
 	printf("練習するブロックを選択してください（複数選べます）。\n");
 
 	for (i = 0; i < 4; i++) {/* 1段から4段まで */
 		int k = i * 4;
-		printf(format, i+1, );
+		printf(format, i+1, k + 1, kstr[k],     k + 2, kstr[k + 1],
+												k + 3, kstr[k + 2], k + 4, kstr[k + 3]);/* 第●段に(1)(2)(3)(4)と4ずづ：k　添字は0から */
 	}
-
+	/* ブロックを重複させずに選択させる（最大16個） */
+	sno = 0;
+	while(1) {
+		printf("番号（選択終了は50/練習中止は99）：");
+		do {
+			scanf("%d", &temp);
+			if (temp == 99) return;
+		} while ((temp < 1 || temp > KTYPE) && temp != 50);
+	}
 }
 
 /* メニュー選択 */
