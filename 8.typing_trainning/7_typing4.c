@@ -208,8 +208,21 @@ void pos_training2(void)
 		return;
 
 	printf("以下のブロックの問題を%d回練習します。\n", NO);
+	for (i = 0; i < sno; i++)/* 選択されたブロックの個数分ループする */
+		printf("%s", kstr[select[i] - 1]);/* selectにはブロックの番号が入っているため、添字で使うなら-1 */
+	
+	printf("\nスペースキーで開始します。\n");
+	while (getch() != ' ')
+		;
+	
+	tno = mno = 0;
 	for (i = 0; i < sno; i++)
-		printf("%s", kstr[select[i] - 1]);
+		len[i] = strlen(kstr[select[i] - 1]);/* 選択されたブロックそれぞれのキー数 */
+	
+	start = clock();
+	for (stage = 0; stage < NO; stage++) {
+		char str[POS_LEN + 1];
+	}
 }
 
 /* メニュー選択 */
