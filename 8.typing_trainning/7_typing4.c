@@ -174,7 +174,7 @@ void pos_training2(void)
 	int tno, mno;     /* 文字数・ミス回数 */
 	clock_t start, end;
 	char *format = "第%d段（%2d）左 %-8s（%2d）右 %-8s "
-											"（%2d）[左] %-8s（%2d）[右] %-8s\n"/* 選んだ2つのブロックから、ランダムに10文字タイプさせる */
+											"（%2d）[左] %-8s（%2d）[右] %-8s\n"/* 選択肢を出力するフォーマット */
 	
 	printf("\n複合ポジショントレーニングを行います。\n");
 	printf("練習するブロックを選択してください（複数選べます）。\n");
@@ -190,23 +190,26 @@ void pos_training2(void)
 		printf("番号（選択終了は50/練習中止は99）：");
 		do {
 			scanf("%d", &temp);
-			if (temp == 99) return;
-		} while ((temp < 1 || temp > KTYPE) && temp != 50);
+			if (temp == 99) return;/* 関数自体から抜け出す */
+		} while ((temp < 1 || temp > KTYPE) && temp != 50);/* 50以外で正常な値が入力されるまでループ */
 
-		if (temp == 50)
-			break;
+		if (temp == 50)/* 50なら選択終了 */
+			break;/* breakは直前のループから抜け出す */
 		for (i = 0; i < sno; i++) {
 			if (temp == select[i]){
 				printf("\aその段は既に選ばれています。\n");
 				break;
 			}
-			if (i == sno)
-				select[sno++] = temp;
 		}
+		if (i == sno)/* snoは回数-1でselectの添字と同じだから、等しい時はfor文をくぐり抜けた＝重複がなかったとき */
+			select[sno++] = temp;
 	}
-	if (sno == 0)
+	if (sno == 0)/* 一つも選ばれずに選択終了50だった場合は関数を抜けて練習終了 */
 		return;
+
 	printf("以下のブロックの問題を%d回練習します。\n", NO);
+	for (i = 0; i < sno; i++)
+		printf("%s", kstr[select[i] - 1]);
 }
 
 /* メニュー選択 */
