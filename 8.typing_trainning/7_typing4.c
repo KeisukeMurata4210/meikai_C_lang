@@ -192,7 +192,21 @@ void pos_training2(void)
 			scanf("%d", &temp);
 			if (temp == 99) return;
 		} while ((temp < 1 || temp > KTYPE) && temp != 50);
+
+		if (temp == 50)
+			break;
+		for (i = 0; i < sno; i++) {
+			if (temp == select[i]){
+				printf("\aその段は既に選ばれています。\n");
+				break;
+			}
+			if (i == sno)
+				select[sno++] = temp;
+		}
 	}
+	if (sno == 0)
+		return;
+	printf("以下のブロックの問題を%d回練習します。\n", NO);
 }
 
 /* メニュー選択 */
