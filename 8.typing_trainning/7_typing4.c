@@ -253,8 +253,14 @@ void word_training(const char *mes, const char *str[], int n)/* 文字列の配�
 		;
 
 	tno = mno = 0;
+	pno = n; /* なぜn? */
 	
-	
+	start = clock();
+	for (stage = 0; stage < NO; stage++) {
+		do {
+			qno = rand() % n;
+		}while(qno == pno);
+	}
 }
 
 /* メニュー選択 */
