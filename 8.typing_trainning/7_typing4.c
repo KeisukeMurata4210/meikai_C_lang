@@ -9,7 +9,7 @@
 # define POS_LEN  10/* ポジショントレーニングの文字数 */
 
 /* 練習メニュー */
-typedef enum { Term, KeyPos, KeyPosComp, Conversation, InValid } Menu;
+typedef enum { Term, KeyPos, KeyPosComp, Clang, Conversation, InValid } Menu;
 
 /* 各ブロックのキー */
 char *kstr[] = {
@@ -239,6 +239,24 @@ void pos_training2(void)
 	printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
 }
 
+/* C言語 / 英会話トレーニング */
+void word_training(const char *mes, const char *str[], int n)/* 文字列の配列はポインターが格納された配列になるからstr[] */
+{
+	int stage;
+	int qno, pno;       /* 問題番号・前回の問題番号 */
+	int tno, mno;       /* 文字数・ミス回数 */
+	clock_t start, end;
+
+	printf("\n%sを%d個練習します。\n", mes, NO);
+	printf("スペースキーで開始します。\n");
+	while(getch() != ' ')
+		;
+
+	tno = mno = 0;
+	
+	
+}
+
 /* メニュー選択 */
 Menu SelectMenu(void)
 {
@@ -268,6 +286,12 @@ int main(void)
       case KeyPosComp:
         pos_training2();
         break;
+			case Clang:
+				word_training("C言語の単語", cstr, cn);
+				break;
+			case Conversation:
+				word_training("英会話の文書", vstr, vn);
+				break;
     }
   }while(menu != Term);
 }
