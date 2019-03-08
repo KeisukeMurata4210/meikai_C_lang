@@ -221,8 +221,22 @@ void pos_training2(void)
 	
 	start = clock();
 	for (stage = 0; stage < NO; stage++) {
-		char str[POS_LEN + 1];
+		char str[POS_LEN + 1];/* 文字数10 + EOS */
+
+		for (i = 0; i < POS_LEN; i++) {/* 文字数10回分ループ */
+			int q = rand() % sno;/* 0 ~ 選択ブロック数-1 */
+			str[i] = kstr[select[q] - 1][rand() % len[q]];
+			/* selectにはコマンド入力されたブロック番号1-16までが入っている。-1することでkstrのいずれかの先頭を取得。 */
+			/* 0 ~ キー数-1で、kstrの一ブロックからランダムに1文字取得する */
+			/* selectとlenが対応しているので同じ乱数qで取り出せる */
+		}
+		str[i] = '\0';
+		mno += go(str);
+		tno += strlen(str);
 	}
+	end = clock();
+	printf("問題：%d文字 / ミス：%d回\n", tno, mno);
+	printf("%.lf秒でした。\n", (double)(end - start) / CLOCKS_PER_SEC);
 }
 
 /* メニュー選択 */
