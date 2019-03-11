@@ -30,3 +30,52 @@ double get_data(void)
   }
   return best;
 }
+
+/* トレーニングを実行して得点（所要時間）を返す */
+double go(void)
+{
+  int i, j, stage;
+  int dgt[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  int a[8];
+  double jikan;  /* 時間 */
+  clock_t start, end;
+
+  printf("欠けている数字を入力してください。\n");
+  printf("スペースキーで開始します。\n");
+  while (getch() != ' ')
+    ;
+
+  srand(time(NULL));
+  start = clock();
+  for (stage = 0; stage < MAX_STAGE; stage++) {
+    int x = rand() % 9; /* 0 ~ 8 */
+    int no;             /* 読み込んだ値 */
+
+    i = j = 0;
+    while (i < 9) { /* dgt[x]を飛ばしてコピー */
+      if (i != x)
+        a[j++] = dgt[i];
+      i++;
+    }
+    for (i = 7; i > 0; i--) { /* 配列aをシャッフル */
+      int j = rand() % (i + 1); /* 0 ~ i */
+    }
+  }
+}
+
+
+int main(void)
+{
+  int retry;        /* もう一度 */
+  double score;     /* 得点（所要時間） */
+  double best;      /* 最高得点（最短所要時間） */
+
+  best = get_data();  /* 前回までの最高得点を得る */
+
+  init_getputch();
+  srand(time(NULL));
+
+  do {
+    score = go();/* トレーニング実行 */
+  }
+}
