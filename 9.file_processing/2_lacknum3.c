@@ -6,7 +6,7 @@
 # include "getputch.h"
 
 # define MAX_STAGE    10
-# define swap(type, x, y)   do {type t = x; x = y; y = t} while(0)
+# define swap(type, x, y)   do {type t = x; x = y; y = t;} while(0)
 
 char dtfile[] = "LACKNUM.DAT";/* ファイル名 */
 
@@ -29,6 +29,24 @@ double get_data(void)
     fclose(fp);
   }
   return best;
+}
+
+/* 今回のトレーニング情報を書き込む */
+void put_data(double best)
+{
+  FILE *fp;
+  time_t t = time(NULL);
+  struct tm *local = localtime(&t);
+
+  if ((fp = fopen(dtfile, "w")) == NULL)
+    printf("エラー発生!!");
+  else {
+    fprintf(fp, "%d %d %d %d %d %d\n",
+                local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
+                local->tm_hour,        local->tm_min,     local->tm_sec);
+    fprintf(fp, "%f\n", best);
+    fclose(fp);
+  }
 }
 
 /* トレーニングを実行して得点（所要時間）を返す */
@@ -76,7 +94,7 @@ double go(void)
           printf("\n");         /* 正解なら改行 */
         fflush(stdout);
       }
-    } while (no != dgt[x] + '0')
+    } while (no != dgt[x] + '0');
   }
   end = clock();
 
@@ -118,4 +136,6 @@ int main(void)
   } while (retry == 1);
 
   put_data(best);
+  term_getputch();
+  return 0;
 }
