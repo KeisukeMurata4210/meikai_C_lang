@@ -59,8 +59,40 @@ double go(void)
     }
     for (i = 7; i > 0; i--) { /* 配列aをシャッフル */
       int j = rand() % (i + 1); /* 0 ~ i */
+      if (i != j)/* ex)7のとき、添字7と添字6以下をシャッフル。これを繰り返す */
+        swap(int, a[i], a[j]);
     }
+    for (i = 0; i < 8; i++)/* 全要素を表示 */
+      printf("%d", a[i]);
+    printf("：");
+    fflush(stdout);
+    do {
+      no = getch();
+      if (isprint(no)) {        /* 表示可能なら */
+        putch(no);
+        if (no != dgt[x] + '0') /* 不正解なら */
+          putch('\b');          /* カーソルを戻す */
+        else
+          printf("\n");         /* 正解なら改行 */
+        fflush(stdout);
+      }
+    } while (no != dgt[x] + '0')
   }
+  end = clock();
+
+  jikan = (double)(end - start) / CLOCKS_PER_SEC;
+  printf("%.lf秒かかりました。\n", jikan);
+
+  if (jikan > 25.0)
+    printf("鈍すぎます。\n");
+  else if (jikan > 20.0)
+    printf("少し鈍いですね。\n");
+  else if (jikan > 17.0)
+    printf("まあまあですね。\n");
+  else
+    printf("素早いですね。\n");
+
+  return jikan;
 }
 
 
@@ -77,5 +109,13 @@ int main(void)
 
   do {
     score = go();/* トレーニング実行 */
-  }
+    if (score < best) {
+      printf("最高得点（所要時間）を更新しました!!\n");
+      best = score;  /* 更新 */
+    }
+    printf("もう一度しますか…（0）いいえ （1）はい");
+    scanf("%d", &retry);
+  } while (retry == 1);
+
+  put_data(best);
 }
