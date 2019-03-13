@@ -9,8 +9,17 @@ void detab(FILE *src, FILE *dst, int width)
   while ((ch = fgetc(src)) != EOF) {
     int num;
     switch(ch) {
-      case '\t':
-        num = width - (pos - 1) % width;
+      case '\t':/* タブ文字 */
+        num = width - (pos - 1) % width;/* numは何を表してるんだろう */
+        for ( ; num > 0; num--) {
+          fputc(' ', dst);
+          pos++;
+        }
+        break;
+      case '\n':/* 改行文字 */
+        fputc(ch, dst); pos = 1; break;
+      default:
+        fputc(ch, dst); pos++;   break;
     }
   }
 }
