@@ -37,12 +37,19 @@ int main(int argc, char *argv[])
         if (*++(*argv) == 't')
           width = atoi(++*argv);
         else {
-          fputc("パラメータが不正です。\n", stderr);
+          fputs("パラメータが不正です。\n", stderr);
           return 1;
         }
-      } else if()
+      } else if((fp = fopen(*argv, "r")) == NULL) {/* argvはすでに2回インクリメントされているから、ファイル名になる */
+        fprintf(stderr, "ファイル%sが正しくオープンできません。\n", *argv);
+        return 1;
+      } else {
+        detab(fp, stdout, width); /* ストリームfp　→　標準出力 */
+        fclose(fp);
+      }
     }
   }
+  return 0;
 }
 /*
 **(++argv)：
@@ -56,5 +63,10 @@ int main(int argc, char *argv[])
 
 ++*argv：
 *で文字列の先頭アドレスに飛び、++で2番目のアドレスに移動する。
+atoiは文字列を数値に変換する、引数は文字列（＝文字配列の先頭のアドレス）
+　++*argvは、**(++argv)のインクリメントも含めて数字の文字列を取得している（-t6なら6、-t12なら12を取得し、数値に変換する）
 
+
+fputc()は一文字ずつ
+fputs()は文字列丸ごと
 */
