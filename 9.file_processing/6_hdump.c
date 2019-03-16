@@ -10,12 +10,12 @@ void hdump(FILE *src, FILE *dst)
   unsigned long count = 0;
   unsigned char buf[16];
 
-  while ((n = fread(buf, 1, 16, src)) > 0) {/* ストリームsrcから、最大16個で大きさ1のデータを配列bufに読み取る */
+  while ((n = fread(buf, 1, 16, src)) > 0) {/* ストリームsrcから、最大16個で大きさ1のデータを配列bufに読み取る。戻り値は読み取った要素の個数 */
     int i;
-    fprintf(dst, "%08lX", count);  /* アドレス　　%lx　→　long/unsigned longを16進数で出力する */
+    fprintf(dst, "%08lX", count);  /* アドレス　　%lX：long/unsigned longを16進数で出力する */
     for (i = 0; i < n; i++)
-      fprintf(dst, "%0*X ", (CHAR_BIT + 3) / 4, (unsigned)buf[i]);
-    
+      fprintf(dst, "%0*X ", (CHAR_BIT + 3) / 4, (unsigned)buf[i]); /* %X：整数を16進数で出力する　%x %Xの違いは出力を小文字にするか大文字にするか */
+      /* 「*」は表示する桁数を指定できる↑ */
     if (n < 16)
       for (i = n; i < 16; i++) fputs("  ", dst);
     
