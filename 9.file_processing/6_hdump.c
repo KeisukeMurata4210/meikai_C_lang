@@ -19,6 +19,9 @@ void hdump(FILE *src, FILE *dst)
     if (n < 16)
       for (i = n; i < 16; i++) fputs("  ", dst);
     
+    for (i = 0; i < n; i++)
+      fputc(isprint(buf[i]) ? buf[i] : '.', dst);
+    
   }
 
 
