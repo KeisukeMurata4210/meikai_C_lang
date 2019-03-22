@@ -20,11 +20,13 @@ void hdump(FILE *src, FILE *dst)
       for (i = n; i < 16; i++) fputs("  ", dst);
     
     for (i = 0; i < n; i++)
-      fputc(isprint(buf[i]) ? buf[i] : '.', dst);
+      fputc(isprint(buf[i]) ? buf[i] : '.', dst); /* 文字 */
     
+    fputc('\n', dst);
+
+    count += 16;
   }
-
-
+  fputc('\n', dst);
 }
 
 int main(int argc, char *argv[])
@@ -32,6 +34,18 @@ int main(int argc, char *argv[])
   FILE *fp;
   if (argc < 2)
     hdump(stdin, stdout);   /* 標準入力　→　標準出力 */
+  else {
+    while (--argc > 0) {
+      if ((fp = fopen(*++argv, "rb")) == NULL) {
+        fprintf(stderr, "ファイル%sが正しくオープンできません。\n", *argv);
+        return 1;
+      } else {
+        hdump(fp, stdout);  /* ストリームfp → 標準出力 */
+        fclose(fp);
+      }
+    }
+  }
+  return 0;
 }
 
 /*
