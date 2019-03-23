@@ -11,8 +11,13 @@ int main(void)
   printf("文字列stを入力してください：");
   scanf("%s", st);
 
-  pt = malloc(strlen(str) + 1); /* 記憶域を動的に確保　EOS忘れずに */
+  pt = malloc(strlen(st) + 1); /* malloc()：指定された大きさの記憶域を確保して、先頭へのポインタを返す　EOS忘れずに */
   if (pt) {
-    strcpy(pt, st);
+    strcpy(pt, st);/* 引数2を引数1にコピー　！！引数はどちらもアドレス！！ */
+    printf("その文字列の複製ptを作りました。\n");
+    printf("st = %s\n", st); /* ポインタ変数だから、&をつけなくてもポインタ取得 */
+    printf("pt = %s\n", pt);
+    free(pt);   /* malloc()で確保した記憶域はfree()で解放する */
   }
+  return 0;
 }
